@@ -14,3 +14,28 @@ NumberNinja 🎯
 5) Reset Best Score
 6) Quit
 """
+
+
+def play(difficulty: str) -> int:
+    cfg = get_config(difficulty)
+    state = new_round(cfg)
+
+    print(f"\nDifficulty: {difficulty.title()}")
+    print(f"Guess a number between {cfg.low} and {cfg.high}")
+    print(f"Attempts: {cfg.max_attempts}\n")
+
+    while not state.is_over:
+        raw = input("Your guess: ")
+        guess, err = validate_guess(raw, cfg)
+        if err:
+            print(err)
+            continue
+        msg = apply_guess(state, guess)
+        print(msg)
+
+    score = score_for_round(state)
+    if score > 0:
+        print(f"Score: {score}\n")
+    else:
+        print("Score: 0\n")
+    return score
