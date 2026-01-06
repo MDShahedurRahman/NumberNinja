@@ -31,3 +31,15 @@ def read_json(path: Path, default: Any) -> Any:
 def write_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+
+def load_scores() -> Dict[str, int]:
+    paths = get_paths()
+    data = read_json(paths.scores_file, {"best": 0})
+    best = int(data.get("best", 0))
+    return {"best": best}
+
+
+def save_best(best: int) -> None:
+    paths = get_paths()
+    write_json(paths.scores_file, {"best": int(best)})
