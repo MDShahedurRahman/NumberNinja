@@ -71,3 +71,25 @@ def feedback(secret: int, guess: int, last_guess: Optional[int]) -> str:
     if diff > last_diff:
         return ("Too high, but colder ❄️" if guess > secret else "Too low, but colder ❄️")
     return "Same distance as before."
+
+
+def apply_guess(state: RoundState, guess: int) -> str:
+    if state.is_over:
+        return "Round is already over."
+
+    state.attempts_used += 1
+    msg = feedback(state.secret, guess, state.last_guess)
+    state.last_guess = guess
+
+    if guess == state.secret:
+        state.is_over = True
+        state.is_win = True
+        return msg
+
+    if state.attempts_used >= state.config.max_attempts:
+        state.is_over = True
+        state.is_win = False
+        return f"{msg} No attempts left. Secret was {state.secret}."
+
+    remaining = state.config.max_attempts - state.attempts_used
+    return f"{msg} Attempts left: {remaining}."
