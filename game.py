@@ -93,3 +93,20 @@ def apply_guess(state: RoundState, guess: int) -> str:
 
     remaining = state.config.max_attempts - state.attempts_used
     return f"{msg} Attempts left: {remaining}."
+
+
+def score_for_round(state: RoundState) -> int:
+    """
+    Simple scoring:
+    - Win: base 100 + bonus depending on remaining attempts and difficulty range
+    - Lose: 0
+    """
+    if not state.is_over or not state.is_win:
+        return 0
+
+    remaining = state.config.max_attempts - state.attempts_used
+    range_size = state.config.high - state.config.low + 1
+
+    # Higher range -> higher difficulty -> higher multiplier
+    difficulty_bonus = 1 if range_size <= 20 else 2 if range_size <= 50 else 3
+    return 100 + (remaining * 10 * difficulty_bonus)
