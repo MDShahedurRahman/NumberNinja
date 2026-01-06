@@ -51,3 +51,20 @@ def test_apply_guess_win_scores_positive():
 
     score = score_for_round(state)
     assert score > 0
+
+
+def test_apply_guess_loss_after_max_attempts():
+    cfg = get_config("easy")
+    rng = random.Random(1)
+    state = new_round(cfg, rng=rng)
+
+    # Keep guessing a number that is guaranteed wrong
+    wrong = cfg.low if state.secret != cfg.low else cfg.high
+
+    for _ in range(cfg.max_attempts):
+        msg = apply_guess(state, wrong)
+
+    assert state.is_over is True
+    assert state.is_win is False
+    assert "No attempts left" in msg
+    assert score_for_round(state) == 0
