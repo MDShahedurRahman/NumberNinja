@@ -37,3 +37,19 @@ def new_round(config: RoundConfig, rng: Optional[random.Random] = None) -> Round
     rng = rng or random.Random()
     secret = rng.randint(config.low, config.high)
     return RoundState(config=config, secret=secret)
+
+
+def validate_guess(text: str, config: RoundConfig) -> Tuple[Optional[int], str]:
+    """
+    Returns (guess_or_none, message). message is non-empty for errors.
+    """
+    t = text.strip()
+    if t == "":
+        return None, "Enter a number."
+    try:
+        guess = int(t)
+    except ValueError:
+        return None, "Invalid input. Enter an integer."
+    if guess < config.low or guess > config.high:
+        return None, f"Out of range. Enter {config.low} to {config.high}."
+    return guess, ""
