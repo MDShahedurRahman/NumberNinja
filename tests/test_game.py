@@ -104,3 +104,12 @@ def test_feedback_first_guess_high_low():
 
     assert msg_high == "Too high."
     assert msg_low == "Too low."
+
+
+def test_feedback_warmer_when_closer():
+    secret = 50
+    # Last guess was farther (60 → diff 10)
+    # New guess is closer (55 → diff 5)
+    msg = feedback(secret, 55, 60)
+
+    assert "warmer" in msg.lower()
