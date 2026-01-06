@@ -26,3 +26,10 @@ def test_validate_guess_invalid():
     guess, err = validate_guess("abc", cfg)
     assert guess is None
     assert "Invalid" in err
+
+
+def test_validate_guess_out_of_range():
+    cfg = get_config("easy")
+    guess, err = validate_guess("999", cfg)
+    assert guess is None
+    assert "Out of range" in err
