@@ -90,3 +90,17 @@ def test_score_positive_on_win():
     score = score_for_round(state)
 
     assert score > 0
+
+
+# ------------------------------------------------
+# STEP 16: Feedback progression (warmer / colder)
+# ------------------------------------------------
+
+def test_feedback_first_guess_high_low():
+    secret = 50
+
+    msg_high = feedback(secret, 60, None)
+    msg_low = feedback(secret, 40, None)
+
+    assert msg_high == "Too high."
+    assert msg_low == "Too low."
