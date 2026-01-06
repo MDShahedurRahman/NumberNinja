@@ -1,4 +1,5 @@
 import random
+
 from game import (
     get_config,
     new_round,
@@ -18,3 +19,10 @@ def test_validate_guess_ok():
     guess, err = validate_guess("10", cfg)
     assert guess == 10
     assert err == ""
+
+
+def test_validate_guess_invalid():
+    cfg = get_config("easy")
+    guess, err = validate_guess("abc", cfg)
+    assert guess is None
+    assert "Invalid" in err
