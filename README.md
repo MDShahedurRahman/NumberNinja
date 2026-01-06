@@ -53,3 +53,36 @@ Always run tests using the active Python interpreter:
 
 ``` bash
 python -m pytest -q
+```
+
+------------------------------------------------------------------------
+
+## How Scoring Works
+
+Points are awarded **only when the player wins a round**.
+
+### Base Rules
+
+-   Losing a round gives **0 points**
+-   Winning a round starts with **100 base points**
+
+### Bonus Points
+
+Additional points are awarded based on: - The number of **remaining
+attempts** - The **difficulty level** (larger ranges are harder and give
+more points)
+
+### Difficulty Multipliers
+
+  Difficulty   Range    Multiplier
+  ------------ -------- ------------
+  Easy         1--20    ×1
+  Medium       1--50    ×2
+  Hard         1--100   ×3
+
+### Final Score Formula
+
+    score = 100 + (remaining_attempts × 10 × difficulty_multiplier)
+
+The highest score achieved is stored locally and shown as the **Best
+Score**.
