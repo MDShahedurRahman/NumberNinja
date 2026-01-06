@@ -113,3 +113,12 @@ def test_feedback_warmer_when_closer():
     msg = feedback(secret, 55, 60)
 
     assert "warmer" in msg.lower()
+
+
+def test_feedback_colder_when_farther():
+    secret = 50
+    # Last guess was closer (55 → diff 5)
+    # New guess is farther (70 → diff 20)
+    msg = feedback(secret, 70, 55)
+
+    assert "colder" in msg.lower()
