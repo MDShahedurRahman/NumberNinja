@@ -44,3 +44,12 @@ python main.py
 
 Follow the on-screen menu to select a difficulty level and start
 playing.
+
+------------------------------------------------------------------------
+
+## Run Tests
+
+Always run tests using the active Python interpreter:
+
+``` bash
+python -m pytest -q
