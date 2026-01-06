@@ -92,9 +92,9 @@ def test_score_positive_on_win():
     assert score > 0
 
 
-# ------------------------------------------------
-# STEP 16: Feedback progression (warmer / colder)
-# ------------------------------------------------
+# ---------------------------------------
+# Feedback progression (warmer / colder)
+# ---------------------------------------
 
 def test_feedback_first_guess_high_low():
     secret = 50
@@ -122,3 +122,11 @@ def test_feedback_colder_when_farther():
     msg = feedback(secret, 70, 55)
 
     assert "colder" in msg.lower()
+
+
+def test_feedback_same_distance():
+    secret = 50
+    # Same distance: 60 and 40 both diff = 10
+    msg = feedback(secret, 40, 60)
+
+    assert "same distance" in msg.lower()
