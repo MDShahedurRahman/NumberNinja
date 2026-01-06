@@ -1,5 +1,5 @@
 import random
-
+import pytest
 
 from game import (
     get_config,
@@ -7,12 +7,24 @@ from game import (
     validate_guess,
     apply_guess,
     score_for_round,
+    feedback,
 )
 
 
+# -------------------------
+# Config & validation tests
+# -------------------------
+
 def test_get_config_easy():
     cfg = get_config("easy")
-    assert cfg.low == 1 and cfg.high == 20 and cfg.max_attempts == 6
+    assert cfg.low == 1
+    assert cfg.high == 20
+    assert cfg.max_attempts == 6
+
+
+def test_get_config_invalid():
+    with pytest.raises(ValueError):
+        get_config("invalid")
 
 
 def test_validate_guess_ok():
@@ -22,7 +34,7 @@ def test_validate_guess_ok():
     assert err == ""
 
 
-def test_validate_guess_invalid():
+def test_validate_guess_invalid_input():
     cfg = get_config("easy")
     guess, err = validate_guess("abc", cfg)
     assert guess is None
@@ -36,21 +48,21 @@ def test_validate_guess_out_of_range():
     assert "Out of range" in err
 
 
-def test_apply_guess_win_scores_positive():
+# -------------------------
+# Game round behavior tests
+# -------------------------
+
+def test_apply_guess_win():
     cfg = get_config("easy")
     rng = random.Random(0)
     state = new_round(cfg, rng=rng)
 
-    # With seed 0, secret is deterministic for this config
     secret = state.secret
-
     msg = apply_guess(state, secret)
+
     assert state.is_over is True
     assert state.is_win is True
     assert "Correct" in msg
-
-    score = score_for_round(state)
-    assert score > 0
 
 
 def test_apply_guess_loss_after_max_attempts():
@@ -58,13 +70,23 @@ def test_apply_guess_loss_after_max_attempts():
     rng = random.Random(1)
     state = new_round(cfg, rng=rng)
 
-    # Keep guessing a number that is guaranteed wrong
-    wrong = cfg.low if state.secret != cfg.low else cfg.high
+    wrong_guess = cfg.low if state.secret != cfg.low else cfg.high
 
     for _ in range(cfg.max_attempts):
-        msg = apply_guess(state, wrong)
+        msg = apply_guess(state, wrong_guess)
 
     assert state.is_over is True
     assert state.is_win is False
     assert "No attempts left" in msg
     assert score_for_round(state) == 0
+
+
+def test_score_positive_on_win():
+    cfg = get_config("easy")
+    rng = random.Random(2)
+    state = new_round(cfg, rng=rng)
+
+    apply_guess(state, state.secret)
+    score = score_for_round(state)
+
+    assert score > 0
