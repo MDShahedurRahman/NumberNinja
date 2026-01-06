@@ -86,3 +86,17 @@ more points)
 
 The highest score achieved is stored locally and shown as the **Best
 Score**.
+
+------------------------------------------------------------------------
+
+## Project Structure
+
+    NumberNinja/
+    ├── game.py
+    ├── main.py
+    ├── storage.py
+    ├── requirements.txt
+    ├── README.md
+    ├── tests/
+    │   ├── conftest.py
+    │   └── test_game.py
