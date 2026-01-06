@@ -1,5 +1,6 @@
 import random
 
+
 from game import (
     get_config,
     new_round,
@@ -33,3 +34,20 @@ def test_validate_guess_out_of_range():
     guess, err = validate_guess("999", cfg)
     assert guess is None
     assert "Out of range" in err
+
+
+def test_apply_guess_win_scores_positive():
+    cfg = get_config("easy")
+    rng = random.Random(0)
+    state = new_round(cfg, rng=rng)
+
+    # With seed 0, secret is deterministic for this config
+    secret = state.secret
+
+    msg = apply_guess(state, secret)
+    assert state.is_over is True
+    assert state.is_win is True
+    assert "Correct" in msg
+
+    score = score_for_round(state)
+    assert score > 0
