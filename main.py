@@ -39,3 +39,41 @@ def play(difficulty: str) -> int:
     else:
         print("Score: 0\n")
     return score
+
+
+def run():
+    scores = load_scores()
+    best = scores["best"]
+
+    while True:
+        print(MENU)
+        choice = input("Choose (1-6): ").strip()
+
+        if choice == "6":
+            print("Bye!")
+            break
+
+        if choice == "4":
+            print(f"Best score: {best}\n")
+            continue
+
+        if choice == "5":
+            best = 0
+            save_best(best)
+            print("Best score reset.\n")
+            continue
+
+        if choice in {"1", "2", "3"}:
+            diff = "easy" if choice == "1" else "medium" if choice == "2" else "hard"
+            score = play(diff)
+            if score > best:
+                best = score
+                save_best(best)
+                print(f"New best score: {best}\n")
+            continue
+
+        print("Invalid option.\n")
+
+
+if __name__ == "__main__":
+    run()
