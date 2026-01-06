@@ -100,3 +100,23 @@ Score**.
     ├── tests/
     │   ├── conftest.py
     │   └── test_game.py
+
+------------------------------------------------------------------------
+
+## Changelog
+
+### v1.0.0
+
+-   Initial release of NumberNinja
+-   Added easy, medium, and hard difficulty levels
+-   Implemented scoring system with difficulty-based bonuses
+-   Added hot/colder feedback progression
+-   Persisted best score locally
+-   Added unit tests for game logic
+-   Added GitHub Actions CI for automated testing
+
+------------------------------------------------------------------------
+
+## License
+
+This project is licensed under the MIT License.
