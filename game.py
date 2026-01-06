@@ -31,3 +31,9 @@ def get_config(difficulty: str) -> RoundConfig:
     if d == "hard":
         return RoundConfig(low=1, high=100, max_attempts=8)
     raise ValueError("difficulty must be one of: easy, medium, hard")
+
+
+def new_round(config: RoundConfig, rng: Optional[random.Random] = None) -> RoundState:
+    rng = rng or random.Random()
+    secret = rng.randint(config.low, config.high)
+    return RoundState(config=config, secret=secret)
