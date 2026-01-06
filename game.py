@@ -53,3 +53,21 @@ def validate_guess(text: str, config: RoundConfig) -> Tuple[Optional[int], str]:
     if guess < config.low or guess > config.high:
         return None, f"Out of range. Enter {config.low} to {config.high}."
     return guess, ""
+
+
+def feedback(secret: int, guess: int, last_guess: Optional[int]) -> str:
+    if guess == secret:
+        return "Correct! 🎉"
+
+    diff = abs(secret - guess)
+    if last_guess is None:
+        return "Too high." if guess > secret else "Too low."
+
+    last_diff = abs(secret - last_guess)
+
+    # Hot/Cold style
+    if diff < last_diff:
+        return ("Too high, but warmer 🔥" if guess > secret else "Too low, but warmer 🔥")
+    if diff > last_diff:
+        return ("Too high, but colder ❄️" if guess > secret else "Too low, but colder ❄️")
+    return "Same distance as before."
